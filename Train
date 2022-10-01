@@ -1,0 +1,203 @@
+import java.util.*;
+public class Train {
+	
+	// Function for Book The Tickets
+		public static void bookTicket(Passenger p) {
+			
+			
+	TicketBooking booking = new TicketBooking();
+		        
+	if(TicketBooking.availableWaitingList == 0)
+		        {
+		            System.out.println("No Tickets Available");
+		            return;
+		        }
+		        //check if preferred berth is available
+		        if((p.berthPreference.equals("L") && TicketBooking.availableLowerBerths > 0 )||
+		           (p.berthPreference.equals("M") && TicketBooking.availableMiddleBerths > 0) ||
+		           (p.berthPreference.equals("U") && TicketBooking.availableUpperBerths > 0)
+  {
+         System.out.println("Preferred Berth Available");
+            if(p.berthPreference.equals("L"))
+            {
+	      System.out.println("Lower Berth Given");
+		                
+		               booking.bookTicket(p,(TicketBooking.lowerBerthsPositions.get(0)),"L");
+		                		                
+		                TicketBooking.lowerBerthsPositions.remove(0);
+		                TicketBooking.availableLowerBerths--;
+		            }
+                  else if(p.berthPreference.equals("M"))
+		            {
+		                System.out.println("Middle Berth Given");
+		                booking.bookTicket(p,(TicketBooking.middleBerthsPositions.get(0)),"M");
+		                TicketBooking.middleBerthsPositions.remove(0);
+		                TicketBooking.availableMiddleBerths--;
+
+		            }
+		            else if(p.berthPreference.equals("U"))
+		            {
+		                System.out.println("Upper Berth Given");
+		                booking.bookTicket(p,(TicketBooking.upperBerthsPositions.get(0)),"U");
+		                TicketBooking.upperBerthsPositions.remove(0);
+		                TicketBooking.availableUpperBerths--;
+		            }
+		                
+
+		        }
+		        // book the available berth
+
+		        else if(TicketBooking.availableLowerBerths > 0)
+		        {
+		            System.out.println("Lower Berth Given");
+		            booking.bookTicket(p,(TicketBooking.lowerBerthsPositions.get(0)),"L");
+		            TicketBooking.lowerBerthsPositions.remove(0);
+		            TicketBooking.availableLowerBerths--;
+
+
+		        }
+		        else if(TicketBooking.availableMiddleBerths > 0)
+		        {
+		            System.out.println("Middle Berth Given");
+		            
+		            booking.bookTicket(p,(TicketBooking.middleBerthsPositions.get(0)),"M");
+		           
+		            TicketBooking.middleBerthsPositions.remove(0);
+		            TicketBooking.availableMiddleBerths--;
+
+		        }
+		        else if(TicketBooking.availableUpperBerths > 0)
+		        {
+		            System.out.println("Upper Berth Given");
+		            booking.bookTicket(p,(TicketBooking.upperBerthsPositions.get(0)),"U");
+		            TicketBooking.upperBerthsPositions.remove(0);
+		            TicketBooking.availableUpperBerths--;
+
+		        }
+		     //  no berth available go to RAC
+		        else if(TicketBooking.availableRacTickets > 0)
+		        {
+		            System.out.println("RAC available");
+		            booking.addToRAC(p,(TicketBooking.racPositions.get(0)),"RAC" );
+		        }
+		        // no RAC available go to WL
+		        else if(TicketBooking.availableWaitingList > 0)
+		        {
+		            System.out.println("Added to Waiting List");
+		            booking.addToWaitingList(p,(TicketBooking.waitingListPositions.get(0)),"WL");
+
+		        }
+		        
+		}
+	
+		 public static void cancelTicket(int id)
+		    {
+			 TicketBooking booking = new TicketBooking();
+		        //check if passenger id is valid
+		        if(!booking.passengers.containsKey(id))
+		        {
+		            System.out.println("Passenger detail Unknown");
+		        }
+		        else
+		            booking.cancelTicket(id);
+		    }	
+	public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        boolean loop = true;
+        //loop to get choices from user 
+        while(loop)
+        {
+            System.out.println("1. Book Ticket ");
+            System.out.println("2. Cancel Ticket ");
+            System.out.println("3. Available Tickets");
+            System.out.println("4. Booked Tickets ");
+            System.out.println("5. Exit");
+            int choice = scanner.nextInt();
+            switch(choice)
+            {
+                
+                case 1:
+                {
+                	 System.out.println("Enter your Train name");
+                     String trainName = scanner.next();
+                     
+                     System.out.println("Enter your Depature");
+                     String depature= scanner.next();
+                     
+                     System.out.println("Enter your Destination");
+                     String destination = scanner.next();
+                     
+                     System.out.println("Enter your name");
+                     String name = scanner.next();
+                    
+                   
+                    char gender;
+                    System.out.println("Enter gender (M/m or F/f): ");
+                    gender = scanner.next().charAt(0);
+
+                    switch (gender) {
+                    case 'M':
+                    case 'm':
+                      System.out.println("Male.");
+                      break;
+
+                    case 'F':
+                    case 'f':
+                      System.out.println("Female.");
+                      break;
+
+                    default:
+                      System.out.println("Unspecified Gender.");
+                    }
+                   
+                    System.out.println("Enter your age");
+                    int age = scanner.nextInt();
+                   
+                    System.out.println("Enter your BerthPreference (L,M or U)");
+                    String berthPreference = scanner.next();
+                    
+                   
+					//create a passenger object
+                    Passenger p = new Passenger (trainName,depature,destination,name,gender,age,berthPreference);
+                    
+                    //booking
+                    bookTicket(p);
+                }
+                break;
+                //cancel ticket
+                case 2:
+                {
+                    //get passenger id to cancel
+                    System.out.println("Enter passenger Id to cancel");
+                    int id = scanner.nextInt();
+                    cancelTicket(id);
+                }
+                break;
+                //available tickets print
+                case 3:
+                {
+                    TicketBooking booking = new TicketBooking();
+                    booking.printAvailable();
+                }
+                break;
+                //booked tickets print
+                case 4:
+                {
+                    TicketBooking booking = new TicketBooking();
+                    booking.printPassenger();
+                }
+                break;
+                //exit
+                case 5:
+                {
+                    loop = false;
+                }
+                break;
+                default:
+                	System.out.println("Invalid Option");
+                
+            }
+        }
+    }
+}
