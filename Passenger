@@ -1,0 +1,31 @@
+public class Passenger {
+	    static int id = 1;	    
+              String trainName;
+	    String depature;
+	    String destination;
+	    String name;
+	    char gender;
+	    int age;
+	    String berthPreference;
+	    int passengerId; 
+	    String alloted;
+	    int number;
+	    
+public Passenger(String trainName, String  depature, String destination , String name, char gender, int age,String berthPreference) {
+			super();
+			this.trainName = trainName;
+			this. depature =  depature;
+			this.destination= destination;
+			this.name = name;
+			this.gender = gender;
+			this.age = age;
+			this.berthPreference = berthPreference;
+	        this.passengerId =id++;
+			this.alloted = " ";
+			this.number = -1;
+		}
+		}
+			
+		
+	  
+
